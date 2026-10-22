@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "video-filter"
+version = "0.1.0"
+description = "基于 Flask 的三路相机视频筛选工具"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "Flask",
+    "PyYAML",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools]
+py-modules = ["app"]

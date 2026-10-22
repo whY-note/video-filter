@@ -1,6 +1,12 @@
 images/*
-videos/*
-.DS_Store
+/videos/*
+!/videos/.gitkeep
+
 .vscode/
 __pycache__/
 *.pyc
+uv.lock
+*.egg-info
+
+.DS_Store
+AGENTS.md

@@ -14,8 +14,8 @@ def client(tmp_path, monkeypatch):
     video_filter.current_task.update(task_name=None, trajectories={},
                                      progress={'processed': [], 'accepted': []},
                                      accept_needed=0, requirements='')
-    (tmp_path / 'Layout_Requirement').mkdir()
-    (tmp_path / 'Layout_Requirement/demo.yaml').write_text('requirements: [test]\ntarget_count: 2\n')
+    (tmp_path / 'Task_Requirement').mkdir()
+    (tmp_path / 'Task_Requirement/demo.yaml').write_text('requirements: [test]\ntarget_count: 2\n')
     root = tmp_path / 'videos/demo'
     for name in ('traj_10_videos', 'traj_2_videos', 'traj_1_videos'):
         directory = root / name
@@ -86,7 +86,7 @@ def test_stale_and_malformed_progress(client):
 
 @pytest.mark.parametrize('target', ['0', '-1', '4', 'true', '1.5', 'abc', 'null'])
 def test_invalid_target(client, target):
-    (video_filter.BASE_DIR / 'Layout_Requirement/demo.yaml').write_text(f'target_count: {target}\n')
+    (video_filter.BASE_DIR / 'Task_Requirement/demo.yaml').write_text(f'target_count: {target}\n')
     assert load(client).status_code == 400
     assert video_filter.current_task['task_name'] is None
 
@@ -98,7 +98,7 @@ def test_validation_and_unloaded_endpoints(client):
     for data in ({}, [], {'task_name': 1}, {'task_name': '../demo'}, {'task_name': 'a\\b'}, {'task_name': '\x00'}):
         assert client.post('/api/load-task', json=data).status_code == 400
     assert client.post('/api/load-task', json={'task_name': 'missing'}).status_code == 404
-    (video_filter.BASE_DIR / 'Layout_Requirement/empty.yaml').write_text('target_count: 1')
+    (video_filter.BASE_DIR / 'Task_Requirement/empty.yaml').write_text('target_count: 1')
     assert client.post('/api/load-task', json={'task_name': 'empty'}).status_code == 404
     load(client)
     for data in ({}, {'image': 'old.jpg'}, {'trajectory': '../outside'}, {'trajectory': []}):
@@ -121,13 +121,13 @@ def test_video_range_and_path_restrictions(client):
     directory = video_filter.BASE_DIR / 'videos/demo/traj_1_videos'
     video = directory / 'head_camera.MP4'
     video.unlink()
-    video.symlink_to(video_filter.BASE_DIR / 'Layout_Requirement/demo.yaml')
+    video.symlink_to(video_filter.BASE_DIR / 'Task_Requirement/demo.yaml')
     assert client.get('/api/video/traj_1_videos/head_camera.MP4').status_code == 403
 
 
 def test_symlink_discovery_and_failed_save(client, monkeypatch):
     root = video_filter.BASE_DIR / 'videos/demo'
-    (root / 'traj_3_videos').symlink_to(video_filter.BASE_DIR / 'Layout_Requirement', target_is_directory=True)
+    (root / 'traj_3_videos').symlink_to(video_filter.BASE_DIR / 'Task_Requirement', target_is_directory=True)
     assert load(client).json['total_trajectories'] == 3
     def fail_save(*args):
         raise OSError('disk full')

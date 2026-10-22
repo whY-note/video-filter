@@ -1,19 +1,30 @@
 # Video Filter
 
-基于 Flask 的三路相机视频筛选工具，通过浏览器访问。一个轨迹目录是一条筛选记录，三路视频共同接受或拒绝。
+![preview](assets/preview.png)
 
-## 启动
+基于 Flask 的三路相机视频筛选工具，通过浏览器访问,用于筛选视频数据。一个轨迹目录是一条筛选记录，三路视频共同接受或拒绝。
+
+## Installation
+
+先安装 [uv](https://docs.astral.sh/uv/getting-started/installation/)，然后在项目根目录安装依赖：
 
 ```bash
-pip install -r requirements.txt
-python app.py
+uv sync
+```
+
+`uv sync` 会自动创建 `.venv` 虚拟环境并安装项目依赖。
+
+## Get Start
+
+```bash
+uv run python app.py
 ```
 
 在浏览器打开 <http://127.0.0.1:8888>，输入任务名字，点击 `Load Task`。
 
 ## 任务数据
 
-任务配置位于 `Layout_Requirement/<任务名字>.yaml`：
+任务配置位于 `Task_Requirement/<任务名字>.yaml`：
 
 ```yaml
 task_name: stack_blocks
@@ -67,10 +78,11 @@ videos/
 
 ## 验证
 
-安装 `pytest` 后运行：
+安装测试依赖后运行：
 
 ```bash
-python -m pytest -q
+uv sync --extra dev
+uv run --extra dev python -m pytest -q
 ```
 
 测试使用临时配置和进度目录；本地存在 `stack_blocks` 时额外只读验证真实视频发现和 Range 读取，不修改原始数据。

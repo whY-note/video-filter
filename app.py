@@ -39,7 +39,7 @@ def task_directory(task_name):
 
 
 def load_yaml_config(task_name):
-    root = Path(BASE_DIR) / 'Layout_Requirement'
+    root = Path(BASE_DIR) / 'Task_Requirement'
     path = root / f'{task_name}.yaml'
     if not within(path, root):
         raise ValueError('Invalid configuration path')

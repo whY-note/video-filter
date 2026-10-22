@@ -16,7 +16,7 @@
 
 相机依次匹配 `front_camera` / `head_camera`、`left_wrist_camera` / `left_camera`、`right_wrist_camera` / `right_camera`；优先前一个名称，再按 `.mp4`、`.webm`、`.ogg`、`.ogv` 顺序匹配格式。文件名匹配不区分大小写。缺失相机显示占位，没有任何可识别视频的目录跳过。
 
-任务配置继续读取 `Layout_Requirement/<任务名字>.yaml` 的 `requirements` 和 `target_count`。目标数量必须为正整数，且不能超过可用轨迹数量。
+任务配置继续读取 `Task_Requirement/<任务名字>.yaml` 的 `requirements` 和 `target_count`。目标数量必须为正整数，且不能超过可用轨迹数量。
 
 ## 共用播放器
 

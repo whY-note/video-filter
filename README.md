@@ -112,6 +112,22 @@ ln -s /data1t/haowenYan/projects/MRUI/data/stack_blocks videos/stack_blocks
 
 此工具沿用单任务使用方式，同一个 Flask 进程共享当前任务，适合单人本地筛选。
 
+## 清理未接受的数据
+
+在仓库根目录运行独立脚本，只需 Python 标准库，参数为包含 `progress.json` 的数据目录：
+
+```bash
+# 预览待删除内容
+python clean_not_accepted.py videos/stack_blocks --dry-run
+
+# 执行删除
+python clean_not_accepted.py videos/stack_blocks
+```
+
+例如，`accepted` 包含 `traj_0002_videos` 时，会保留整个 `traj_0002_videos/` 目录及同级的 `traj_0002.vla`。`progress.json` 原样保留，包括其中的历史记录；数据目录内其余文件和子目录全部删除，包括拒绝和尚未筛选的轨迹。若 `accepted` 为空，则只保留 `progress.json`。
+
+删除前会检查进度格式及所有 accepted 轨迹目录、对应 `.vla` 是否存在；检查失败时不删除任何内容。支持数据目录软链接，删除过程中遇到的软链接只删除链接本身。执行前请停止筛选及其他会修改该数据目录的程序；删除不可恢复，建议先用 `--dry-run` 确认范围。
+
 ## 验证
 
 安装测试依赖后运行：

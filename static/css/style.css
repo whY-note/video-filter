@@ -203,7 +203,26 @@ body.resizing-columns * {
 }
 
 #playPauseBtn {
-    min-width: 55px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    height: 36px;
+    padding: 5px;
+    flex-shrink: 0;
+}
+
+#playPauseBtn svg {
+    fill: currentColor;
+}
+
+#playPauseBtn .pause-icon,
+#playPauseBtn.is-playing .play-icon {
+    display: none;
+}
+
+#playPauseBtn.is-playing .pause-icon {
+    display: inline;
 }
 
 #videoSeek {

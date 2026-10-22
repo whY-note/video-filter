@@ -301,7 +301,8 @@ class SharedVideoPlayer {
         playPauseBtn.disabled = !enabled || this.scrubbing;
         videoSeek.disabled = !enabled;
         playbackSpeed.disabled = !enabled;
-        playPauseBtn.textContent = this.wantsPlay ? '暂停' : '播放';
+        playPauseBtn.classList.toggle('is-playing', this.wantsPlay);
+        playPauseBtn.title = this.wantsPlay ? '暂停' : '播放';
         playPauseBtn.setAttribute('aria-label', this.wantsPlay ? '暂停三路视频' : '播放三路视频');
         videoSeek.max = String(this.duration);
         videoSeek.value = String(this.position);

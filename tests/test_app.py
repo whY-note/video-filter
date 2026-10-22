@@ -35,6 +35,72 @@ def load(client):
     return client.post('/api/load-task', json={'task_name': 'demo'})
 
 
+@pytest.fixture(params=['absolute', 'relative'])
+def linked_task(client, request):
+    base = video_filter.BASE_DIR
+    target = base / 'external_data/demo'
+    target.parent.mkdir()
+    link = base / 'videos/demo'
+    link.rename(target)
+    destination = target if request.param == 'absolute' else Path('../external_data/demo')
+    link.symlink_to(destination, target_is_directory=True)
+    return target
+
+
+def test_linked_task_load_stream_and_resume(client, linked_task):
+    response = load(client)
+    assert response.status_code == 200, response.json
+    assert response.json['total_trajectories'] == 3
+    video = client.get('/api/current-trajectory').json['videos']['head']
+    response = client.get('/api/video/' + video, headers={'Range': 'bytes=2-5'})
+    assert response.status_code == 206
+    assert response.data == b'2345'
+    response.close()
+    response = client.post('/api/mark-accept', json={'trajectory': 'traj_1_videos'})
+    assert response.status_code == 200
+    saved = json.loads((linked_task / 'progress.json').read_text())
+    assert saved == {'processed': ['traj_1_videos'], 'accepted': ['traj_1_videos']}
+    assert not (linked_task / 'progress.json.tmp').exists()
+    assert load(client).json['accepted_count'] == 1
+    assert client.get('/api/current-trajectory').json['trajectory'] == 'traj_2_videos'
+
+
+def test_linked_task_rejects_nested_links_outside_task(client, linked_task):
+    outside = video_filter.BASE_DIR / 'other_task'
+    outside.mkdir()
+    video = outside / 'front_camera.mp4'
+    video.write_bytes(b'outside task')
+    (linked_task / 'traj_3_videos').symlink_to(outside, target_is_directory=True)
+    hidden = linked_task / 'traj_0_videos/front_camera.mp4'
+    hidden.symlink_to(video)
+    response = load(client)
+    assert response.status_code == 200, response.json
+    assert response.json['total_trajectories'] == 3
+    assert client.get('/api/video/traj_3_videos/front_camera.mp4').status_code == 403
+    assert client.get('/api/video/traj_0_videos/front_camera.mp4').status_code == 403
+    # Recheck the boundary when serving a video that changed after discovery.
+    known_video = linked_task / 'traj_1_videos/head_camera.MP4'
+    known_video.unlink()
+    known_video.symlink_to(video)
+    assert client.get('/api/video/traj_1_videos/head_camera.MP4').status_code == 403
+
+
+@pytest.mark.parametrize('filename', ['progress.json', 'progress.json.tmp'])
+def test_linked_task_rejects_progress_links_outside_task(client, linked_task, filename):
+    response = load(client)
+    assert response.status_code == 200, response.json
+    outside = video_filter.BASE_DIR / 'outside.json'
+    outside.write_text('{"processed": [], "accepted": []}')
+    original = outside.read_bytes()
+    (linked_task / filename).symlink_to(outside)
+    response = client.post('/api/mark-accept', json={'trajectory': 'traj_1_videos'})
+    assert response.status_code == 500
+    assert video_filter.current_task['progress']['processed'] == []
+    assert outside.read_bytes() == original
+    if filename == 'progress.json':
+        assert load(client).status_code == 400
+
+
 def test_page_and_static_assets(client):
     response = client.get('/')
     assert response.status_code == 200
@@ -154,11 +220,13 @@ def test_real_stack_blocks_read_only(monkeypatch):
     if not (root / 'videos/stack_blocks').exists():
         pytest.skip('Local sample videos are not installed')
     monkeypatch.setattr(video_filter, 'BASE_DIR', root)
-    monkeypatch.setattr(video_filter, 'load_yaml_config', lambda _: {'target_count': 6, 'requirements': ['test']})
+    monkeypatch.setattr(video_filter, 'load_yaml_config', lambda _: {'target_count': 1, 'requirements': ['test']})
     # Never read or write sample progress; this check only discovers and streams.
     monkeypatch.setattr(video_filter, 'load_progress', lambda *args: {'processed': [], 'accepted': []})
     with video_filter.app.test_client() as client:
-        assert client.post('/api/load-task', json={'task_name': 'stack_blocks'}).json['total_trajectories'] == 6
+        response = client.post('/api/load-task', json={'task_name': 'stack_blocks'})
+        assert response.status_code == 200, response.json
+        assert response.json['total_trajectories'] > 0
         videos = client.get('/api/current-trajectory').json['videos']
         assert all(videos.values())
         for video in videos.values():

@@ -77,6 +77,14 @@ videos/
     └── progress.json
 ```
 
+`videos/<任务名字>` 也可以是指向外部数据目录的软链接。例如，在仓库根目录执行（`videos/stack_blocks` 尚不存在时）：
+
+```bash
+ln -s /data1t/haowenYan/projects/MRUI/data/stack_blocks videos/stack_blocks
+```
+
+然后在页面输入 `stack_blocks` 并点击 `Load Task`；对应配置仍从 `Task_Requirement/stack_blocks.yaml` 读取。支持绝对路径和相对路径软链接，`progress.json` 会写入软链接指向的真实目录，因此该目录需要可写。轨迹、视频和进度文件仍限制在该任务的真实目录内。
+
 | 位置 | 优先文件名 | 兼容别名 |
 | --- | --- | --- |
 | 上方：头部相机 | `front_camera` | `head_camera` |
@@ -85,7 +93,7 @@ videos/
 
 支持 `.mp4`、`.webm`、`.ogg`、`.ogv`，扩展名不区分大小写。优先使用表中的优先文件名，同名多格式时按上述扩展名顺序选择。缺少某一路会显示占位，其余视频可正常筛选；没有任何可识别相机视频的目录不计入总数。
 
-视频由浏览器直接解码，不自动转码，建议使用 H.264 MP4。本地示例 `videos/stack_blocks` 有 6 条轨迹，使用前需要创建对应的任务 YAML，填写实际筛选要求。
+视频由浏览器直接解码，不自动转码，建议使用 H.264 MP4。使用前需要创建对应的任务 YAML，填写实际筛选要求，并根据数据设置目标数量。
 
 ## 播放与筛选
 

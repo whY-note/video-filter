@@ -4,4 +4,4 @@ requirements:
   - 将三个积木堆叠在一起
   - 积木之间要分散
 
-target_count: 2
+target_count: 100

@@ -14,6 +14,8 @@
 
 从 `videos/<任务名字>/` 的直接子目录读取 `traj_<数字>_videos`，按数字排序。每个目录为一条筛选记录。
 
+`videos/<任务名字>` 支持指向外部目录的绝对路径或相对路径软链接。先校验任务路径是 `videos/` 的直接子项，再解析真实目录；轨迹发现、视频读取和进度读写均以该真实目录为边界，拒绝任务内部指向边界之外的软链接。任务 YAML 仍从 `Task_Requirement/` 读取，进度保存在软链接目标目录。
+
 相机依次匹配 `front_camera` / `head_camera`、`left_wrist_camera` / `left_camera`、`right_wrist_camera` / `right_camera`；优先前一个名称，再按 `.mp4`、`.webm`、`.ogg`、`.ogv` 顺序匹配格式。文件名匹配不区分大小写。缺失相机显示占位，没有任何可识别视频的目录跳过。
 
 任务配置继续读取 `Task_Requirement/<任务名字>.yaml` 的 `requirements` 和 `target_count`。目标数量必须为正整数，且不能超过可用轨迹数量。

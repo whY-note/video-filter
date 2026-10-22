@@ -34,9 +34,11 @@ def within(path, root):
 def task_directory(task_name):
     root = Path(BASE_DIR) / 'videos'
     directory = root / task_name
-    if not within(directory, root):
+    # Validate the direct child before following a task-level directory symlink.
+    if directory.parent != root or directory.name in ('.', '..'):
         raise ValueError('Invalid task path')
-    return directory
+    # All nested paths remain constrained to this task's resolved directory.
+    return directory.resolve()
 
 
 def load_yaml_config(task_name):

@@ -7,7 +7,6 @@ const filterCount = document.getElementById('filterCount');
 const acceptCount = document.getElementById('acceptCount');
 const acceptBtn = document.getElementById('acceptBtn');
 const rejectBtn = document.getElementById('rejectBtn');
-const trajectoryName = document.getElementById('trajectoryName');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const videoSeek = document.getElementById('videoSeek');
 const videoTime = document.getElementById('videoTime');
@@ -392,22 +391,18 @@ async function loadTask() {
 async function loadNextTrajectory() {
     currentTrajectory = null;
     player.clear('正在加载轨迹…');
-    trajectoryName.textContent = '正在加载轨迹…';
     playbackStatus.textContent = '正在加载轨迹…';
     try {
         const data = await api('/api/current-trajectory');
         if (!data.trajectory) {
             player.clear('所有轨迹已筛选完成');
-            trajectoryName.textContent = '所有轨迹已筛选完成';
             playbackStatus.textContent = '可重新加载任务查看已保存进度';
             return;
         }
         currentTrajectory = data.trajectory;
-        trajectoryName.textContent = `${currentTask} / ${currentTrajectory}`;
         player.load(data.videos);
     } catch (error) {
         player.clear('加载轨迹失败，请重新加载任务');
-        trajectoryName.textContent = '加载失败';
         playbackStatus.textContent = error.message;
         throw error;
     }

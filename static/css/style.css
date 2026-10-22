@@ -1,0 +1,257 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    min-height: 100vh;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #333;
+}
+
+.main-layout {
+    display: flex;
+    gap: 20px;
+    height: calc(100vh - 120px);
+}
+
+/* Image Section */
+.image-section {
+    flex: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fafafa;
+    overflow: hidden;
+}
+
+.image-display {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    color: #999;
+    font-size: 16px;
+}
+
+.image-display img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Control Section */
+.control-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #fafafa;
+    overflow-y: auto;
+}
+
+.task-input-row {
+    display: flex;
+    gap: 8px;
+}
+
+.task-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.task-input:focus {
+    outline: none;
+    border-color: #87CEFA;
+    box-shadow: 0 0 4px rgba(135, 206, 250, 0.3);
+}
+
+.load-btn {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.load-btn:hover {
+    background-color: #45a049;
+}
+
+.requirement-view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.requirement-view textarea {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+    resize: none;
+    background-color: #fff;
+}
+
+.requirement-view textarea:focus {
+    outline: none;
+    border-color: #87CEFA;
+    box-shadow: 0 0 4px rgba(135, 206, 250, 0.2);
+}
+
+/* Progress Section */
+.progress-label {
+    font-size: 13px;
+    color: #333;
+    font-weight: 500;
+    margin-top: 8px;
+}
+
+.progress-bar-container {
+    position: relative;
+    height: 24px;
+    background-color: #fff;
+    border: 2px solid #87CEFA;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-container.accept {
+    border-color: #FF69B4;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #87CEFA;
+    transition: width 0.3s ease;
+    border-radius: 8px;
+}
+
+.progress-bar.accept {
+    background-color: #FF69B4;
+}
+
+.progress-count {
+    text-align: right;
+    font-size: 12px;
+    color: #666;
+    padding-right: 4px;
+    height: 18px;
+    line-height: 18px;
+}
+
+/* Button Row */
+.button-row {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px;
+    font-size: 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    color: white;
+}
+
+.accept-btn {
+    background-color: #4CAF50;
+}
+
+.accept-btn:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.accept-btn:active {
+    transform: scale(0.98);
+}
+
+.reject-btn {
+    background-color: #F44336;
+}
+
+.reject-btn:hover {
+    background-color: #da190b;
+    transform: scale(1.05);
+}
+
+.reject-btn:active {
+    transform: scale(0.98);
+}
+
+/* Error/Success Messages */
+.message {
+    padding: 10px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.message.error {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef5350;
+    display: block;
+}
+
+.message.success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #81c784;
+    display: block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-layout {
+        flex-direction: column;
+        height: auto;
+        gap: 15px;
+    }
+    
+    .image-section {
+        min-height: 300px;
+    }
+    
+    .control-section {
+        max-height: 400px;
+    }
+}

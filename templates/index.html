@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Filter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Image Filter</h1>
+        
+        <div class="main-layout">
+            <!-- Left: Image Display -->
+            <div class="image-section">
+                <div id="imageDisplay" class="image-display">
+                    <p>No image loaded</p>
+                </div>
+            </div>
+            
+            <!-- Right: Controls -->
+            <div class="control-section">
+                <!-- Task Input -->
+                <div class="task-input-row">
+                    <input type="text" id="taskInput" placeholder="Enter Task name" class="task-input">
+                    <button id="loadBtn" class="load-btn">Load Task</button>
+                </div>
+                
+                <!-- Requirement Display -->
+                <div class="requirement-view">
+                    <textarea id="requirementView" readonly placeholder="Requirement will appear here"></textarea>
+                </div>
+                
+                <!-- Filter Progress -->
+                <label class="progress-label">筛选进度:</label>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="filterProgress"></div>
+                </div>
+                <div class="progress-count" id="filterCount">0/0</div>
+                
+                <!-- Accept Progress -->
+                <label class="progress-label">达标进度:</label>
+                <div class="progress-bar-container accept">
+                    <div class="progress-bar accept" id="acceptProgress"></div>
+                </div>
+                <div class="progress-count" id="acceptCount">0/0</div>
+                
+                <!-- Buttons -->
+                <div class="button-row">
+                    <button id="acceptBtn" class="btn accept-btn" title="Mark as accepted">✔</button>
+                    <button id="rejectBtn" class="btn reject-btn" title="Mark as rejected">🗑</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

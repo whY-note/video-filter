@@ -1,0 +1,10 @@
+# Requirement of hang_mugs
+task_name: hang_mugs
+requirements:
+  - 杯子之间要分散
+  - 杯子不被机械臂或其他物品遮挡
+  - 杯把朝外，相对于下方水平线的角度是[15度, 165度]
+  - 杯架的杆子相对于下方水平线的角度是[-25度, +25度]
+  - 杯架位置可以变，但变化范围不大
+
+target_count: 300

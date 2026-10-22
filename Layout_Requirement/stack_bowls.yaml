@@ -1,0 +1,7 @@
+# Requirement of stack_bowls
+task_name: stack_bowls
+requirements:
+  - 碗之间要分散
+  - 碗不要太远
+
+target_count: 300

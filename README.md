@@ -1,6 +1,6 @@
-# Image Filter
+# Video Filter
 
-PyQt5 和 Flask Web 两种版本的图像筛选工具。根据 `doc/design.md` 的设计实现。
+基于 Flask Web 的视频筛选工具。根据 `doc/design.md` 的设计实现，通过浏览器访问。
 
 ## 环境配置
 
@@ -8,18 +8,7 @@ PyQt5 和 Flask Web 两种版本的图像筛选工具。根据 `doc/design.md` �
 pip install -r requirements.txt
 ```
 
-## 方式1：PyQt5 桌面应用
-
-激活你的 conda 环境，然后运行程序：
-
-```bash
-conda activate ML_env
-python main.py
-```
-
-在程序中输入 `Task name`（例如 `mug_hanging`），点击 `Load Task`。左侧会显示图片，右侧会显示 Requirement、两个进度条和两个按钮（打勾/删除）。
-
-## 方式2：Flask Web 应用（浏览器访问）
+## 启动应用
 
 启动 Flask 服务器：
 
@@ -28,7 +17,9 @@ conda activate web_env
 python app.py
 ```
 
-用浏览器打开 `http://127.0.0.1:5000`
+用浏览器打开 `http://127.0.0.1:8888`
+
+在页面中输入 `Task name`（例如 `hang_mugs`），点击 `Load Task`。左侧会显示图片，右侧会显示 Requirement、两个进度条和两个按钮（打勾/删除）。任务需要对应的 `Layout_Requirement/<Task name>.yaml` 配置文件和 `images/<Task name>/` 图片目录。
 
 ## 进度存储
 

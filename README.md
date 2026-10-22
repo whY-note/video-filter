@@ -16,11 +16,39 @@ uv sync
 
 ## Get Start
 
+在仓库根目录启动：
+
 ```bash
-uv run python app.py
+uv run python -m video_filter
 ```
 
+也可以使用以下命令启动：
+
+```bash
+uv run video-filter
+```
+
+默认监听端口为 `8888`。
+
 在浏览器打开 <http://127.0.0.1:8888>，输入任务名字，点击 `Load Task`。
+
+## 项目结构
+
+```text
+src/
+└── video_filter/
+    ├── __init__.py
+    ├── __main__.py
+    ├── app.py
+    ├── templates/
+    └── static/
+tests/
+Task_Requirement/
+videos/
+pyproject.toml
+```
+
+应用代码、模板和静态资源随 `video_filter` 包安装。任务配置和视频数据保留在包外，分别从启动时工作目录下的 `Task_Requirement/` 和 `videos/` 读取；在本仓库使用时，请从仓库根目录启动。
 
 ## 任务数据
 

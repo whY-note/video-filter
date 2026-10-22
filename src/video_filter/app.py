@@ -7,7 +7,8 @@ import yaml
 from flask import Flask, jsonify, render_template, request, send_file
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
-BASE_DIR = Path(__file__).resolve().parent
+# Runtime data lives in the working directory, outside the installed package.
+BASE_DIR = Path.cwd()
 VIDEO_EXTS = ('.mp4', '.webm', '.ogg', '.ogv')
 CAMERAS = {
     'head': ('front_camera', 'head_camera'),
@@ -242,5 +243,9 @@ def mark_reject():
     return mark_trajectory(False)
 
 
-if __name__ == '__main__':
+def main():
     app.run(debug=True, host='0.0.0.0', port=8888)
+
+
+if __name__ == '__main__':
+    main()

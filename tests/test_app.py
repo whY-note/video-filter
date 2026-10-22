@@ -1,11 +1,9 @@
 import json
-import sys
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-import app as video_filter
+from video_filter import app as video_filter
 
 
 @pytest.fixture
@@ -35,6 +33,20 @@ def client(tmp_path, monkeypatch):
 
 def load(client):
     return client.post('/api/load-task', json={'task_name': 'demo'})
+
+
+def test_page_and_static_assets(client):
+    response = client.get('/')
+    assert response.status_code == 200
+    assert b'/static/css/style.css' in response.data
+    assert b'/static/js/app.js' in response.data
+    for path, mimetype in (('/static/css/style.css', 'text/css'),
+                           ('/static/js/app.js', 'text/javascript')):
+        response = client.get(path)
+        assert response.status_code == 200
+        assert response.mimetype == mimetype
+        assert response.data
+        response.close()
 
 
 def test_discovery_aliases_and_format_priority(client):

@@ -16,5 +16,16 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest"]
 
+[project.scripts]
+video-filter = "video_filter.app:main"
+
 [tool.setuptools]
-py-modules = ["app"]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["video_filter*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+video_filter = ["templates/*.html", "static/css/*.css", "static/js/*.js"]

@@ -30,33 +30,205 @@ h1 {
     height: calc(100vh - 120px);
 }
 
-/* Image Section */
-.image-section {
+/* Three cameras with one shared timeline */
+.video-section {
     flex: 3;
+    min-width: 0;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #fafafa;
     overflow: hidden;
 }
 
-.image-display {
-    width: 100%;
-    height: 100%;
+.trajectory-name {
+    color: #555;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.video-grid {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, var(--left-size, 1fr)) 10px minmax(0, var(--right-size, 1fr));
+    grid-template-rows: minmax(0, var(--head-size, 2fr)) 10px minmax(0, var(--bottom-size, 1fr));
+}
+
+.camera-view {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f0f0f0;
-    color: #999;
-    font-size: 16px;
+    background: #17191c;
+    color: #c4c7cc;
+    border-radius: 6px;
+    overflow: hidden;
 }
 
-.image-display img {
-    max-width: 100%;
-    max-height: 100%;
+.head-camera {
+    grid-column: 1 / -1;
+    grid-row: 1;
+}
+
+#leftCamera {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+#rightCamera {
+    grid-column: 3;
+    grid-row: 3;
+}
+
+.video-divider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+    user-select: none;
+    outline: none;
+}
+
+.row-divider {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    cursor: row-resize;
+}
+
+.column-divider {
+    grid-column: 2;
+    grid-row: 3;
+    cursor: col-resize;
+}
+
+.video-divider::before,
+.video-divider::after {
+    content: '';
+    position: absolute;
+    background: #b6bcc3;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+.row-divider::before {
+    width: 100%;
+    height: 1px;
+}
+
+.row-divider::after {
+    width: 36px;
+    height: 4px;
+}
+
+.column-divider::before {
+    width: 1px;
+    height: 100%;
+}
+
+.column-divider::after {
+    width: 4px;
+    height: 28px;
+}
+
+.video-divider:hover::after,
+.video-divider:focus-visible::after,
+.video-divider.dragging::after {
+    background: #4CAF50;
+}
+
+.video-divider:focus-visible {
+    box-shadow: inset 0 0 0 2px #4CAF50;
+}
+
+body.resizing-rows,
+body.resizing-rows * {
+    cursor: row-resize !important;
+    user-select: none;
+}
+
+body.resizing-columns,
+body.resizing-columns * {
+    cursor: col-resize !important;
+    user-select: none;
+}
+
+.camera-label {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 1;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.65);
+    color: #fff;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.camera-view video {
+    width: 100%;
+    height: 100%;
     object-fit: contain;
+}
+
+.camera-view p {
+    padding: 40px 16px 16px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.playback-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    font-size: 13px;
+}
+
+.playback-controls button,
+.playback-controls select {
+    padding: 7px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+}
+
+#playPauseBtn {
+    min-width: 55px;
+}
+
+#videoSeek {
+    flex: 1;
+    min-width: 50px;
+    accent-color: #4CAF50;
+    cursor: pointer;
+}
+
+#videoTime {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.playback-status {
+    min-height: 18px;
+    color: #666;
+    font-size: 12px;
+}
+
+button:disabled,
+select:disabled,
+input:disabled {
+    cursor: default;
+    opacity: 0.5;
 }
 
 /* Control Section */
@@ -79,6 +251,7 @@ h1 {
 
 .task-input {
     flex: 1;
+    min-width: 0;
     padding: 8px 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -152,6 +325,7 @@ h1 {
 }
 
 .progress-bar {
+    width: 0;
     height: 100%;
     background-color: #87CEFA;
     transition: width 0.3s ease;
@@ -247,8 +421,18 @@ h1 {
         gap: 15px;
     }
     
-    .image-section {
-        min-height: 300px;
+    .video-section {
+        flex: none;
+        height: 560px;
+    }
+
+    .playback-controls {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    #videoSeek {
+        min-width: 100px;
     }
     
     .control-section {

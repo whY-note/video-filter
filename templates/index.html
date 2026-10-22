@@ -3,20 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Filter</title>
+    <title>Video Filter</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Image Filter</h1>
+        <h1>Video Filter</h1>
         
         <div class="main-layout">
-            <!-- Left: Image Display -->
-            <div class="image-section">
-                <div id="imageDisplay" class="image-display">
-                    <p>No image loaded</p>
+            <!-- Left: three cameras, one shared timeline -->
+            <section class="video-section" aria-label="轨迹视频">
+                <div id="trajectoryName" class="trajectory-name">尚未加载任务</div>
+                <div id="videoGrid" class="video-grid">
+                    <div id="headCamera" class="camera-view head-camera">
+                        <span class="camera-label">头部相机</span>
+                        <p>尚未加载视频</p>
+                    </div>
+                    <div id="rowDivider" class="video-divider row-divider" role="separator" tabindex="0"
+                         aria-label="调整头部与下方相机的高度" aria-orientation="horizontal"
+                         aria-controls="headCamera leftCamera rightCamera" aria-valuemin="10" aria-valuemax="90" aria-valuenow="67"
+                         title="上下拖动调整高度，双击恢复默认比例"></div>
+                    <div id="leftCamera" class="camera-view">
+                        <span class="camera-label">左相机</span>
+                        <p>尚未加载视频</p>
+                    </div>
+                    <div id="columnDivider" class="video-divider column-divider" role="separator" tabindex="0"
+                         aria-label="调整左右相机的宽度" aria-orientation="vertical"
+                         aria-controls="leftCamera rightCamera" aria-valuemin="10" aria-valuemax="90" aria-valuenow="50"
+                         title="左右拖动调整宽度，双击恢复默认比例"></div>
+                    <div id="rightCamera" class="camera-view">
+                        <span class="camera-label">右相机</span>
+                        <p>尚未加载视频</p>
+                    </div>
                 </div>
-            </div>
+                <div class="playback-controls">
+                    <button id="playPauseBtn" type="button" disabled>播放</button>
+                    <input id="videoSeek" type="range" min="0" max="0" step="0.01" value="0" aria-label="视频进度" disabled>
+                    <output id="videoTime" for="videoSeek">00:00 / 00:00</output>
+                    <label for="playbackSpeed">倍速</label>
+                    <select id="playbackSpeed" disabled>
+                        <option value="1">1×</option>
+                        <option value="2">2×</option>
+                        <option value="4">4×</option>
+                        <option value="8">8×</option>
+                    </select>
+                </div>
+                <p id="playbackStatus" class="playback-status" role="status">输入任务名字以加载视频</p>
+            </section>
             
             <!-- Right: Controls -->
             <div class="control-section">
@@ -47,8 +80,8 @@
                 
                 <!-- Buttons -->
                 <div class="button-row">
-                    <button id="acceptBtn" class="btn accept-btn" title="Mark as accepted">✔</button>
-                    <button id="rejectBtn" class="btn reject-btn" title="Mark as rejected">🗑</button>
+                    <button id="acceptBtn" class="btn accept-btn" title="Mark as accepted" disabled>✔</button>
+                    <button id="rejectBtn" class="btn reject-btn" title="Mark as rejected" disabled>🗑</button>
                 </div>
             </div>
         </div>

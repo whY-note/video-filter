@@ -1,0 +1,7 @@
+# Requirement of stack_blocks
+task_name: stack_blocks
+requirements:
+  - 将三个积木堆叠在一起
+  - 积木之间要分散
+
+target_count: 2
